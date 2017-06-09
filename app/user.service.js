@@ -43,6 +43,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     return this._http.put(this.getUserUrl(user.id), JSON.stringify(user))
                         .map(function (res) { return res.json(); });
                 };
+                UserService.prototype.deleteUser = function (userId) {
+                    return this._http.delete(this.getUserUrl(userId))
+                        .map(function (res) { return res.json(); });
+                };
                 UserService.prototype.getUserUrl = function (userId) {
                     return this._url + "/" + userId;
                 };

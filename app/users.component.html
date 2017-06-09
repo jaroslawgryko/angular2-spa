@@ -18,7 +18,11 @@
                <a [routerLink]="['EditUser', { id: user.id }]">
                     <i class="glyphicon glyphicon-edit"></i>
                </a>
-            <td><i class="glyphicon glyphicon-remove"></i></td>
+            <td>
+                <i (click)="deleteUser(user)" 
+                    class="glyphicon glyphicon-remove clickable">                    
+                </i>
+            </td>
         </tr>
     </tbody>
 </table>
