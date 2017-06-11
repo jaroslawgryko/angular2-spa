@@ -1,4 +1,4 @@
-System.register(['angular2/core', './post.service', './spinner.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './post.service', './user.service', './spinner.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './post.service', './spinner.component'], func
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, post_service_1, spinner_component_1;
+    var core_1, post_service_1, user_service_1, spinner_component_1;
     var PostsComponent;
     return {
         setters:[
@@ -20,20 +20,38 @@ System.register(['angular2/core', './post.service', './spinner.component'], func
             function (post_service_1_1) {
                 post_service_1 = post_service_1_1;
             },
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
+            },
             function (spinner_component_1_1) {
                 spinner_component_1 = spinner_component_1_1;
             }],
         execute: function() {
             PostsComponent = (function () {
-                function PostsComponent(_postService) {
+                function PostsComponent(_postService, _userService) {
                     this._postService = _postService;
+                    this._userService = _userService;
                     this.posts = [];
-                    this.isLoading = true;
+                    this.users = [];
                 }
                 PostsComponent.prototype.ngOnInit = function () {
+                    this.loadUsers();
+                    this.loadPosts();
+                };
+                PostsComponent.prototype.loadUsers = function () {
                     var _this = this;
-                    this._postService.getPosts()
-                        .subscribe(function (posts) { return _this.posts = posts; }, null, function () { _this.isLoading = false; });
+                    this._userService.getUsers()
+                        .subscribe(function (users) { return _this.users = users; });
+                };
+                PostsComponent.prototype.loadPosts = function (filter) {
+                    var _this = this;
+                    this.postsLoading = true;
+                    this._postService.getPosts(filter)
+                        .subscribe(function (posts) { return _this.posts = posts; }, null, function () { _this.postsLoading = false; });
+                };
+                PostsComponent.prototype.reloadPosts = function (filter) {
+                    this.currentPost = null;
+                    this.loadPosts(filter);
                 };
                 PostsComponent.prototype.select = function (post) {
                     var _this = this;
@@ -48,10 +66,10 @@ System.register(['angular2/core', './post.service', './spinner.component'], func
                     core_1.Component({
                         templateUrl: 'app/posts.component.html',
                         styles: ["\n        .posts li { cursor: default; }\n        .posts li:hover { background: #ecf0f1; } \n        .list-group-item.active, \n        .list-group-item.active:hover, \n        .list-group-item.active:focus { \n            background-color: #ecf0f1;\n            border-color: #ecf0f1; \n            color: #2c3e50;\n        }\n    "],
-                        providers: [post_service_1.PostService],
+                        providers: [post_service_1.PostService, user_service_1.UserService],
                         directives: [spinner_component_1.SpinnerComponent]
                     }), 
-                    __metadata('design:paramtypes', [post_service_1.PostService])
+                    __metadata('design:paramtypes', [post_service_1.PostService, user_service_1.UserService])
                 ], PostsComponent);
                 return PostsComponent;
             }());

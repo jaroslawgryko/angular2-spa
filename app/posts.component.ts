@@ -1,6 +1,7 @@
 import {Component, OnInit} from 'angular2/core';
 
 import {PostService} from './post.service';
+import {UserService} from './user.service';
 import {SpinnerComponent} from './spinner.component';
 
 
@@ -17,25 +18,46 @@ import {SpinnerComponent} from './spinner.component';
             color: #2c3e50;
         }
     `],
-    providers: [PostService],
+    providers: [PostService, UserService],
     directives: [SpinnerComponent]  
 })
 export class PostsComponent implements OnInit {
 	posts = [];
-    isLoading = true;
+    users = [];
+    postsLoading;
     commentsLoading;
     currentPost;
 
-    constructor(private _postService: PostService) {
+    constructor(
+            private _postService: PostService,
+            private _userService: UserService
+        ) {
 	}
 
 	ngOnInit() {
-		this._postService.getPosts()
+        this.loadUsers();
+        this.loadPosts();
+	}
+
+    private loadUsers(){
+        this._userService.getUsers()
+            .subscribe(users => this.users = users);        
+    }
+
+    private loadPosts(filter?) {
+        this.postsLoading = true;
+		this._postService.getPosts(filter)
 			.subscribe(
                 posts => this.posts = posts,
                 null,
-                () => { this.isLoading = false; });
-	}
+                () => { this.postsLoading = false; });
+    }
+
+    reloadPosts(filter){
+        this.currentPost = null;
+
+        this.loadPosts(filter);
+    }
 
     select(post){
  		this.currentPost = post;
