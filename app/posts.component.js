@@ -38,10 +38,11 @@ System.register(['angular2/core', './post.service', './spinner.component'], func
                 PostsComponent.prototype.select = function (post) {
                     var _this = this;
                     this.currentPost = post;
+                    this.commentsLoading = true;
                     this._postService.getComments(post.id)
                         .subscribe(function (comments) {
                         return _this.currentPost.comments = comments;
-                    });
+                    }, null, function () { return _this.commentsLoading = false; });
                 };
                 PostsComponent = __decorate([
                     core_1.Component({
