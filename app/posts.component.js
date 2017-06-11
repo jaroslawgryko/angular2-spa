@@ -1,4 +1,4 @@
-System.register(['angular2/core', './post.service'], function(exports_1, context_1) {
+System.register(['angular2/core', './post.service', './spinner.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './post.service'], function(exports_1, context
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, post_service_1;
+    var core_1, post_service_1, spinner_component_1;
     var PostsComponent;
     return {
         setters:[
@@ -19,6 +19,9 @@ System.register(['angular2/core', './post.service'], function(exports_1, context
             },
             function (post_service_1_1) {
                 post_service_1 = post_service_1_1;
+            },
+            function (spinner_component_1_1) {
+                spinner_component_1 = spinner_component_1_1;
             }],
         execute: function() {
             PostsComponent = (function () {
@@ -35,7 +38,8 @@ System.register(['angular2/core', './post.service'], function(exports_1, context
                 PostsComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/posts.component.html',
-                        providers: [post_service_1.PostService]
+                        providers: [post_service_1.PostService],
+                        directives: [spinner_component_1.SpinnerComponent]
                     }), 
                     __metadata('design:paramtypes', [post_service_1.PostService])
                 ], PostsComponent);
