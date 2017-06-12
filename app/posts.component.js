@@ -54,7 +54,7 @@ System.register(['angular2/core', './post.service', './user.service', './spinner
                     this._postService.getPosts(filter)
                         .subscribe(function (posts) {
                         _this.posts = posts;
-                        _this.pagedPosts = _this.getPostsInPage(1);
+                        _this.pagedPosts = _.take(_this.posts, _this.pageSize);
                     }, null, function () { _this.postsLoading = false; });
                 };
                 PostsComponent.prototype.reloadPosts = function (filter) {
@@ -71,15 +71,8 @@ System.register(['angular2/core', './post.service', './user.service', './spinner
                     }, null, function () { return _this.commentsLoading = false; });
                 };
                 PostsComponent.prototype.onPageChanged = function (page) {
-                    this.pagedPosts = this.getPostsInPage(page);
-                };
-                PostsComponent.prototype.getPostsInPage = function (page) {
-                    var result = [];
-                    var startingIndex = (page - 1) * this.pageSize;
-                    var endIndex = Math.min(startingIndex + this.pageSize, this.posts.length);
-                    for (var i = startingIndex; i < endIndex; i++)
-                        result.push(this.posts[i]);
-                    return result;
+                    var startIndex = (page - 1) * this.pageSize;
+                    this.pagedPosts = _.take(_.rest(this.posts, startIndex), this.pageSize);
                 };
                 PostsComponent = __decorate([
                     core_1.Component({
